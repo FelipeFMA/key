@@ -118,8 +118,8 @@ jobs:
 
       - name: Fetch TOML fixtures
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive --depth 1 toml-config/toml-test
+          FIXTURE_REPO="$(git config -f .gitmodules --get 'submodule.toml-config/toml-test.url')"
+          git clone --depth 1 "$FIXTURE_REPO" toml-config/toml-test
 
       - name: Verify TOML fixtures
         run: test -d toml-config/toml-test/tests/valid
