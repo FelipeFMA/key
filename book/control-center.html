@@ -1,0 +1,696 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Control Center - The Jay Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-949e4302.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-5c257383.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Jay Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/mahkoh/jay" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="control-center"><a class="header" href="control-center.html#control-center">Control Center</a></h1>
+<p>The control center is Jay’s built-in graphical interface for inspecting and
+modifying compositor settings. It provides a convenient alternative to editing
+configuration files or running CLI commands – most settings that can be changed
+in <code>config.toml</code> or via the CLI can also be changed here.</p>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>Changes made in the control center are not persisted across compositor
+restarts. To make settings permanent, add them to your <code>config.toml</code>.</p>
+</blockquote>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>The control center consumes GPU and CPU resources while open. Close it when
+not in use to avoid reducing compositor performance.</p>
+</blockquote>
+<h2 id="opening-the-control-center"><a class="header" href="control-center.html#opening-the-control-center">Opening the Control Center</a></h2>
+<ul>
+<li>
+<p>Press <code>alt-c</code> (the default shortcut for the <code>open-control-center</code> action).</p>
+</li>
+<li>
+<p>Run the CLI command:</p>
+<pre><code class="language-shell">~$ jay control-center
+</code></pre>
+</li>
+</ul>
+<h2 id="interface-overview"><a class="header" href="control-center.html#interface-overview">Interface Overview</a></h2>
+<p>The control center window has a sidebar on the left listing all available panes
+and a central panel area on the right.</p>
+<ul>
+<li><strong>Click</strong> a pane name in the sidebar to open it.</li>
+<li><strong>Multiple panes</strong> can be open at the same time – they appear as tabs in the
+panel area.</li>
+<li><strong>Drag</strong> pane tabs to rearrange them or to split the panel area into
+side-by-side or stacked layouts.</li>
+<li><strong>Close</strong> a pane by clicking its X button or middle-clicking its tab.</li>
+</ul>
+<h2 id="panes"><a class="header" href="control-center.html#panes">Panes</a></h2>
+<h3 id="compositor"><a class="header" href="control-center.html#compositor">Compositor</a></h3>
+<p>General information and top-level controls for the running compositor.</p>
+<dl>
+<dt id="repository"><a class="header" href="control-center.html#repository">Repository</a></dt>
+<dd>Link to the Jay GitHub repository</dd>
+<dt id="version"><a class="header" href="control-center.html#version">Version</a></dt>
+<dd>The running Jay version</dd>
+<dt id="pid"><a class="header" href="control-center.html#pid">PID</a></dt>
+<dd>The compositor process ID</dd>
+<dt id="wayland_display"><a class="header" href="control-center.html#wayland_display">WAYLAND_DISPLAY</a></dt>
+<dd>The Wayland socket name (shown when available)</dd>
+<dt id="config-dir"><a class="header" href="control-center.html#config-dir">Config DIR</a></dt>
+<dd>Path to the active configuration directory (shown when available)</dd>
+<dt id="libei-socket"><a class="header" href="control-center.html#libei-socket">Libei Socket</a></dt>
+<dd>Toggle the libei input emulation socket</dd>
+<dt id="libei_socket"><a class="header" href="control-center.html#libei_socket">LIBEI_SOCKET</a></dt>
+<dd>The socket name (shown when the Libei Socket toggle is enabled)</dd>
+<dt id="workspace-display-order"><a class="header" href="control-center.html#workspace-display-order">Workspace Display Order</a></dt>
+<dd>Dropdown to select how workspaces are ordered in the bar</dd>
+<dt id="log-level"><a class="header" href="control-center.html#log-level">Log Level</a></dt>
+<dd>Dropdown to change the active log level at runtime (shown when the logger is available)</dd>
+<dt id="log-file"><a class="header" href="control-center.html#log-file">Log File</a></dt>
+<dd>Click to copy the log file path to the clipboard (shown when the logger is available)</dd>
+<dt id="session-management"><a class="header" href="control-center.html#session-management">Session Management</a></dt>
+<dd>Toggle the <code>xdg_session_manager_v1</code> protocol (see
+<a href="configuration/misc.html#session-management">Session Management</a>)</dd>
+</dl>
+<p>Buttons at the bottom:</p>
+<ul>
+<li><strong>Quit</strong> – stop the compositor.</li>
+<li><strong>Reload Config</strong> – reload the configuration file.</li>
+<li><strong>Switch to VT</strong> – switch to another virtual terminal (with a numeric input
+to select which one).</li>
+</ul>
+<h3 id="outputs"><a class="header" href="control-center.html#outputs">Outputs</a></h3>
+<p>The Outputs pane is the largest and most interactive pane. It has two sub-views:
+a visual <strong>arrangement editor</strong> and per-connector <strong>settings</strong>.</p>
+<h4 id="arrangement-editor"><a class="header" href="control-center.html#arrangement-editor">Arrangement editor</a></h4>
+<p>A 2D preview of your monitor layout. Monitors are drawn as labeled rectangles
+at their configured positions and sizes.</p>
+<ul>
+<li><strong>Click</strong> a monitor to select it (highlighted with a shadow).</li>
+<li><strong>Drag</strong> a selected monitor to reposition it.</li>
+<li><strong>Scroll</strong> to zoom in and out.</li>
+<li><strong>Middle-click drag</strong> or <strong>right-click drag</strong> to pan the viewport.</li>
+<li><strong>Arrow keys</strong> nudge the selected monitor by 1 pixel.</li>
+<li><strong>Snap to neighbor</strong> – when enabled, dragged monitors snap to the edges of
+neighboring monitors within a 10-pixel threshold. Hold <strong>Shift</strong> to
+temporarily invert the snapping behavior.</li>
+<li><strong>Guide lines</strong> – optional horizontal and vertical lines at the edges of all
+monitors, helping you align them precisely.</li>
+</ul>
+<p>A <strong>Zoom To Fit</strong> checkbox in the top bar auto-scales the view to fit all
+monitors. It is disabled when you manually pan or zoom.</p>
+<p>Arrangement settings (accessible via the Settings button):</p>
+<dl>
+<dt id="show-guide-lines"><a class="header" href="control-center.html#show-guide-lines">Show guide lines</a></dt>
+<dd>Draw alignment guide lines</dd>
+<dt id="snap-to-neighbor"><a class="header" href="control-center.html#snap-to-neighbor">Snap to neighbor</a></dt>
+<dd>Snap edges when dragging (hold Shift to invert)</dd>
+<dt id="show-arrangement-area"><a class="header" href="control-center.html#show-arrangement-area">Show arrangement area</a></dt>
+<dd>Toggle the visual arrangement sub-pane</dd>
+<dt id="layout"><a class="header" href="control-center.html#layout">Layout</a></dt>
+<dd>How the arrangement and settings are split: Auto, Vertical, or Horizontal</dd>
+<dt id="show-disconnected-heads"><a class="header" href="control-center.html#show-disconnected-heads">Show disconnected heads</a></dt>
+<dd>Include outputs that are no longer connected</dd>
+<dt id="show-disabled-heads"><a class="header" href="control-center.html#show-disabled-heads">Show disabled heads</a></dt>
+<dd>Include outputs that are disabled</dd>
+</dl>
+<h4 id="staged-changes"><a class="header" href="control-center.html#staged-changes">Staged changes</a></h4>
+<p>Changes made in the Outputs pane are <strong>staged</strong> – they are not applied
+immediately. Three buttons in the top bar control the workflow:</p>
+<ul>
+<li><strong>Test</strong> – validates the staged changes against the display backend without
+applying them. Errors are shown in the pane.</li>
+<li><strong>Commit</strong> – applies all staged changes. The pane title shows <code>Outputs (*)</code>
+when there are uncommitted changes.</li>
+<li><strong>Reset</strong> – discards all staged changes and reverts to the live state.
+This is displayed as a checkbox; checking it resets the staged changes.</li>
+</ul>
+<p>When a staged value differs from the live value, the current (live) value is
+shown alongside with a <code>^ current</code> annotation.</p>
+<h4 id="per-connector-settings"><a class="header" href="control-center.html#per-connector-settings">Per-connector settings</a></h4>
+<p>Each connected display appears as a collapsible section with the connector name,
+manufacturer, and model. Inside:</p>
+<dl>
+<dt id="serial-number"><a class="header" href="control-center.html#serial-number">Serial Number</a></dt>
+<dd>Read-only identifier</dd>
+<dt id="enabled"><a class="header" href="control-center.html#enabled">Enabled</a></dt>
+<dd>Toggle the connector on or off</dd>
+<dt id="position"><a class="header" href="control-center.html#position">Position</a></dt>
+<dd>X and Y coordinates in compositor space</dd>
+<dt id="scale"><a class="header" href="control-center.html#scale">Scale</a></dt>
+<dd>Fractional scaling factor, with +/- buttons for fine adjustment</dd>
+<dt id="mode"><a class="header" href="control-center.html#mode">Mode</a></dt>
+<dd>Resolution and refresh rate (dropdown when multiple modes are available)</dd>
+<dt id="physical-size-mm"><a class="header" href="control-center.html#physical-size-mm">Physical Size (mm)</a></dt>
+<dd>Read-only physical dimensions in millimeters</dd>
+<dt id="size"><a class="header" href="control-center.html#size">Size</a></dt>
+<dd>Read-only computed pixel dimensions of the output</dd>
+<dt id="transform"><a class="header" href="control-center.html#transform">Transform</a></dt>
+<dd>Rotation and mirroring (none, rotate-90, rotate-180, rotate-270, flip, and flipped rotations)</dd>
+<dt id="custom-brightness"><a class="header" href="control-center.html#custom-brightness">Custom Brightness</a></dt>
+<dd>Toggle whether to use a custom SDR content brightness</dd>
+<dt id="brightness"><a class="header" href="control-center.html#brightness">Brightness</a></dt>
+<dd>Brightness value in cd/m^2 (shown when Custom Brightness is enabled)</dd>
+<dt id="colorimetry"><a class="header" href="control-center.html#colorimetry">Colorimetry</a></dt>
+<dd>Color space (depends on monitor capabilities)</dd>
+<dt id="eotf"><a class="header" href="control-center.html#eotf">EOTF</a></dt>
+<dd>Transfer function (depends on monitor capabilities)</dd>
+<dt id="format"><a class="header" href="control-center.html#format">Format</a></dt>
+<dd>Framebuffer pixel format</dd>
+<dt id="tearing"><a class="header" href="control-center.html#tearing">Tearing</a></dt>
+<dd>Tearing mode. When set to a “Fullscreen” mode, a <strong>Limit Windows</strong> checkbox appears; inside that, a <strong>Requests Tearing</strong> checkbox filters by whether the window has requested tearing.</dd>
+<dt id="vrr-active"><a class="header" href="control-center.html#vrr-active">VRR Active</a></dt>
+<dd>Read-only indicator of whether VRR is currently active (only shown when the monitor supports VRR)</dd>
+<dt id="vrr"><a class="header" href="control-center.html#vrr">VRR</a></dt>
+<dd>Variable refresh rate mode (only shown when the monitor supports VRR). When set to a “Fullscreen” mode, a <strong>Limit Windows</strong> checkbox appears; inside that, a <strong>Limit Content Types</strong> checkbox enables filtering by content type (<strong>Photos</strong>, <strong>Videos</strong>, <strong>Games</strong> checkboxes).</dd>
+<dt id="non-desktop"><a class="header" href="control-center.html#non-desktop">Non-desktop</a></dt>
+<dd>Read-only indicator (Yes/No) of whether the connector is inherently non-desktop</dd>
+<dt id="override"><a class="header" href="control-center.html#override">Override</a></dt>
+<dd>Force the connector to be treated as desktop or non-desktop</dd>
+<dt id="blend-space"><a class="header" href="control-center.html#blend-space">Blend Space</a></dt>
+<dd>How colors are blended during compositing (sRGB or linear)</dd>
+<dt id="use-native-gamut"><a class="header" href="control-center.html#use-native-gamut">Use Native Gamut</a></dt>
+<dd>Use the display’s advertised color primaries instead of assuming sRGB</dd>
+<dt id="native-gamut"><a class="header" href="control-center.html#native-gamut">Native Gamut</a></dt>
+<dd>Read-only CIE xy primaries for red, green, blue, and white point</dd>
+<dt id="limit-cursor-hz"><a class="header" href="control-center.html#limit-cursor-hz">Limit Cursor HZ</a></dt>
+<dd>Toggle to limit cursor-triggered refresh rate when VRR is active</dd>
+<dt id="cursor-hz"><a class="header" href="control-center.html#cursor-hz">Cursor HZ</a></dt>
+<dd>Cursor refresh rate value (shown when Limit Cursor HZ is enabled)</dd>
+<dt id="flip-margin-ms"><a class="header" href="control-center.html#flip-margin-ms">Flip Margin (ms)</a></dt>
+<dd>Read-only page-flip margin for this connector</dd>
+</dl>
+<h3 id="virtual-outputs"><a class="header" href="control-center.html#virtual-outputs">Virtual Outputs</a></h3>
+<p>Manage headless virtual outputs. These are useful for screen sharing, testing,
+or running applications on a display without a physical monitor.</p>
+<ul>
+<li>View the list of existing virtual outputs.</li>
+<li><strong>Add</strong> a new virtual output by entering a name and clicking Add.</li>
+<li><strong>Remove</strong> an existing virtual output by clicking its X button.</li>
+</ul>
+<h3 id="gpus"><a class="header" href="control-center.html#gpus">GPUs</a></h3>
+<p>Inspect and configure graphics cards (DRM devices). Each GPU appears as a
+collapsible section showing its device path and model name.</p>
+<dl>
+<dt id="vendor"><a class="header" href="control-center.html#vendor">Vendor</a></dt>
+<dd>Read-only GPU vendor name</dd>
+<dt id="model"><a class="header" href="control-center.html#model">Model</a></dt>
+<dd>Read-only GPU model name</dd>
+<dt id="devnode"><a class="header" href="control-center.html#devnode">Devnode</a></dt>
+<dd>Read-only device path</dd>
+<dt id="syspath"><a class="header" href="control-center.html#syspath">Syspath</a></dt>
+<dd>Read-only sysfs path</dd>
+<dt id="pci-id"><a class="header" href="control-center.html#pci-id">PCI ID</a></dt>
+<dd>Read-only vendor:model in hex</dd>
+<dt id="dev"><a class="header" href="control-center.html#dev">Dev</a></dt>
+<dd>Read-only major:minor device numbers</dd>
+<dt id="api"><a class="header" href="control-center.html#api">API</a></dt>
+<dd>Dropdown to select the graphics API – Vulkan (recommended) or the legacy OpenGL renderer</dd>
+<dt id="primary-device"><a class="header" href="control-center.html#primary-device">Primary Device</a></dt>
+<dd>Checkbox to make this GPU the render device</dd>
+<dt id="direct-scanout"><a class="header" href="control-center.html#direct-scanout">Direct Scanout</a></dt>
+<dd>Toggle direct scanout (bypasses composition for lower latency)</dd>
+<dt id="flip-margin"><a class="header" href="control-center.html#flip-margin">Flip Margin</a></dt>
+<dd>Adjust the page-flip margin in milliseconds, with +/- buttons for 0.1 ms steps</dd>
+<dt id="connectors"><a class="header" href="control-center.html#connectors">Connectors</a></dt>
+<dd>List of display connectors attached to this GPU</dd>
+</dl>
+<h3 id="input"><a class="header" href="control-center.html#input">Input</a></h3>
+<p>The Input pane is divided into per-seat and per-device sections.</p>
+<h4 id="per-seat-settings"><a class="header" href="control-center.html#per-seat-settings">Per-seat settings</a></h4>
+<p>Each seat (typically just <code>default</code>) appears as a collapsible section:</p>
+<dl>
+<dt id="repeat-rate"><a class="header" href="control-center.html#repeat-rate">Repeat Rate</a></dt>
+<dd>Key repeat speed, with +/- 20 buttons</dd>
+<dt id="repeat-delay"><a class="header" href="control-center.html#repeat-delay">Repeat Delay</a></dt>
+<dd>Initial delay before key repeat begins, with +/- 20 buttons</dd>
+<dt id="cursor-size"><a class="header" href="control-center.html#cursor-size">Cursor Size</a></dt>
+<dd>Size of the seat cursor in pixels</dd>
+<dt id="simple-im"><a class="header" href="control-center.html#simple-im">Simple IM</a></dt>
+<dd>Toggle the built-in XCompose-based input method</dd>
+<dt id="hardware-cursor"><a class="header" href="control-center.html#hardware-cursor">Hardware Cursor</a></dt>
+<dd>Toggle hardware cursor rendering</dd>
+<dt id="pointer-revert-key"><a class="header" href="control-center.html#pointer-revert-key">Pointer Revert Key</a></dt>
+<dd>Text field for the keysym name of the cancel key</dd>
+<dt id="focus-follows-mouse"><a class="header" href="control-center.html#focus-follows-mouse">Focus Follows Mouse</a></dt>
+<dd>Toggle whether moving the pointer over a window gives it focus</dd>
+<dt id="fallback-output-mode"><a class="header" href="control-center.html#fallback-output-mode">Fallback Output Mode</a></dt>
+<dd>Dropdown to choose between cursor-based and focus-based output selection</dd>
+</dl>
+<p>Below the settings grid:</p>
+<ul>
+<li><strong>Focus History</strong> – checkboxes for “Only Visible” and “Same Workspace”.</li>
+<li><strong>Reload Simple IM</strong> – button to reload XCompose files without restarting.</li>
+</ul>
+<h5 id="keymap-management"><a class="header" href="control-center.html#keymap-management">Keymap management</a></h5>
+<p>Each seat has a full keymap management section:</p>
+<ul>
+<li><strong>Copy Keymap</strong> – copies the current keymap text to the clipboard.</li>
+<li><strong>Load Default Keymap</strong> – restores the compositor’s default keymap.</li>
+<li><strong>Backup / Restore Keymap</strong> – save and restore a keymap backup.</li>
+<li><strong>Load Keymap from Clipboard</strong> – paste a keymap from the clipboard.</li>
+<li><strong>Create Keymap from Names</strong> – build a keymap from RMLVO (Rules, Model,
+Layout, Variant, Options) fields. Rules and Model have a text input and a
+“Default” checkbox; Layouts, Variants, and Options have text inputs only.
+Click <strong>Load</strong> to apply.</li>
+</ul>
+<h4 id="per-device-settings"><a class="header" href="control-center.html#per-device-settings">Per-device settings</a></h4>
+<p>Each input device appears as a collapsible section. The available settings
+depend on the device’s capabilities:</p>
+<dl>
+<dt id="seat"><a class="header" href="control-center.html#seat">Seat</a></dt>
+<dd>Dropdown to assign the device to a seat, with a Detach button. Shown for all devices.</dd>
+<dt id="syspath--devnode"><a class="header" href="control-center.html#syspath--devnode">Syspath / Devnode</a></dt>
+<dd>Read-only device paths. Shown for all devices.</dd>
+<dt id="capabilities"><a class="header" href="control-center.html#capabilities">Capabilities</a></dt>
+<dd>Read-only list (e.g. Keyboard, Pointer, Touch). Shown for all devices.</dd>
+<dt id="natural-scrolling"><a class="header" href="control-center.html#natural-scrolling">Natural Scrolling</a></dt>
+<dd>Toggle scroll direction. Shown for devices that support it.</dd>
+<dt id="scroll-distance-px"><a class="header" href="control-center.html#scroll-distance-px">Scroll Distance (px)</a></dt>
+<dd>Pixels per legacy scroll event. Shown for pointer devices.</dd>
+<dt id="accel-profile"><a class="header" href="control-center.html#accel-profile">Accel Profile</a></dt>
+<dd>Dropdown: Flat or Adaptive. Shown for devices with acceleration.</dd>
+<dt id="accel-speed"><a class="header" href="control-center.html#accel-speed">Accel Speed</a></dt>
+<dd>Numeric input (-1.0 to 1.0). Shown for devices with acceleration.</dd>
+<dt id="click-method"><a class="header" href="control-center.html#click-method">Click Method</a></dt>
+<dd>Dropdown: none, button-areas, clickfinger. Shown for devices that support it.</dd>
+<dt id="tap-enabled"><a class="header" href="control-center.html#tap-enabled">Tap Enabled</a></dt>
+<dd>Toggle tap-to-click. Shown for touchpads.</dd>
+<dt id="tap-drag-enabled"><a class="header" href="control-center.html#tap-drag-enabled">Tap Drag Enabled</a></dt>
+<dd>Toggle tap-and-drag. Shown for touchpads.</dd>
+<dt id="tap-drag-lock-enabled"><a class="header" href="control-center.html#tap-drag-lock-enabled">Tap Drag Lock Enabled</a></dt>
+<dd>Toggle tap-drag lock. Shown for touchpads.</dd>
+<dt id="left-handed"><a class="header" href="control-center.html#left-handed">Left Handed</a></dt>
+<dd>Swap primary and secondary buttons. Shown for devices that support it.</dd>
+<dt id="middle-button-emulation"><a class="header" href="control-center.html#middle-button-emulation">Middle Button Emulation</a></dt>
+<dd>Simultaneous left+right produces middle click. Shown for devices that support it.</dd>
+<dt id="output"><a class="header" href="control-center.html#output">Output</a></dt>
+<dd>Dropdown to map the device to a specific output (only has effect for touch and tablet devices), with a Detach button. Shown for all devices.</dd>
+<dt id="transform-matrix"><a class="header" href="control-center.html#transform-matrix">Transform Matrix</a></dt>
+<dd>2x2 matrix applied to relative motion. Shown for pointer devices.</dd>
+<dt id="calibration-matrix"><a class="header" href="control-center.html#calibration-matrix">Calibration Matrix</a></dt>
+<dd>2x3 matrix for absolute input calibration. Shown for devices that support it.</dd>
+<dt id="device-keymap"><a class="header" href="control-center.html#device-keymap">Device Keymap</a></dt>
+<dd>Override the seat keymap for this device, with full keymap management UI and a “Use Seat Keymap” button to revert. Shown for keyboards.</dd>
+</dl>
+<h3 id="idle"><a class="header" href="control-center.html#idle">Idle</a></h3>
+<p>Configure the screensaver and idle behavior:</p>
+<dl>
+<dt id="interval"><a class="header" href="control-center.html#interval">Interval</a></dt>
+<dd>Minutes and seconds of inactivity before the on-idle action fires</dd>
+<dt id="grace-period"><a class="header" href="control-center.html#grace-period">Grace period</a></dt>
+<dd>Minutes and seconds of the warning phase (screen goes black but is not yet locked)</dd>
+<dt id="inhibitors"><a class="header" href="control-center.html#inhibitors">Inhibitors</a></dt>
+<dd>Collapsible list showing which applications are currently preventing idle (e.g. video players), with a count in the header</dd>
+</dl>
+<h3 id="look-and-feel"><a class="header" href="control-center.html#look-and-feel">Look and Feel</a></h3>
+<p>Visual customization with live preview. Changes take effect immediately.</p>
+<dl>
+<dt id="show-bar"><a class="header" href="control-center.html#show-bar">Show Bar</a></dt>
+<dd>Toggle the status bar</dd>
+<dt id="bar-position"><a class="header" href="control-center.html#bar-position">Bar Position</a></dt>
+<dd>Dropdown to select the bar position</dd>
+<dt id="show-titles"><a class="header" href="control-center.html#show-titles">Show Titles</a></dt>
+<dd>Toggle window title bars</dd>
+<dt id="primary-selection"><a class="header" href="control-center.html#primary-selection">Primary Selection</a></dt>
+<dd>Toggle middle-click paste (requires application restart to take effect)</dd>
+<dt id="ui-drag"><a class="header" href="control-center.html#ui-drag">UI Drag</a></dt>
+<dd>Toggle whether workspaces and tiles can be dragged</dd>
+<dt id="ui-drag-threshold-px"><a class="header" href="control-center.html#ui-drag-threshold-px">UI Drag Threshold (px)</a></dt>
+<dd>Minimum distance in pixels before a drag begins</dd>
+<dt id="float-pin-icon"><a class="header" href="control-center.html#float-pin-icon">Float Pin Icon</a></dt>
+<dd>Show the pin icon on floating windows even when not pinned</dd>
+<dt id="float-above-fullscreen"><a class="header" href="control-center.html#float-above-fullscreen">Float Above Fullscreen</a></dt>
+<dd>Show floating windows above fullscreen windows</dd>
+<dt id="font"><a class="header" href="control-center.html#font">Font</a></dt>
+<dd>Text field for the main compositor font family</dd>
+<dt id="title-font"><a class="header" href="control-center.html#title-font">Title Font</a></dt>
+<dd>Override font for window title bars (empty = use main font)</dd>
+<dt id="bar-font"><a class="header" href="control-center.html#bar-font">Bar Font</a></dt>
+<dd>Override font for the status bar (empty = use main font)</dd>
+</dl>
+<p>Three reset buttons at the bottom: <strong>Reset Sizes</strong>, <strong>Reset Colors</strong>, and
+<strong>Reset Fonts</strong>.</p>
+<h4 id="sizes"><a class="header" href="control-center.html#sizes">Sizes</a></h4>
+<p>A collapsible section with numeric inputs for every theme size: border widths,
+title heights, bar height, gaps, and other spacing values.</p>
+<h4 id="colors"><a class="header" href="control-center.html#colors">Colors</a></h4>
+<p>A collapsible section with <strong>color pickers</strong> for every theme color. Click a
+color swatch to open a full RGBA color picker with sliders and hex input.
+This includes colors for backgrounds, borders, text, the status bar, focused
+and unfocused windows, attention indicators, and more.</p>
+<h3 id="clients"><a class="header" href="control-center.html#clients">Clients</a></h3>
+<p>Inspect and manage connected Wayland clients.</p>
+<p>A <strong>Filter</strong> toggle at the top enables the composable filter builder (see
+<a href="control-center.html#filtering">Filtering</a> below). When filtering is off, all clients are shown.</p>
+<p>Each client appears as a collapsible section showing its ID and process name.
+Expand it to see:</p>
+<dl>
+<dt id="id"><a class="header" href="control-center.html#id">ID</a></dt>
+<dd>Client identifier</dd>
+<dt id="pid-1"><a class="header" href="control-center.html#pid-1">PID</a></dt>
+<dd>Process ID</dd>
+<dt id="uid"><a class="header" href="control-center.html#uid">UID</a></dt>
+<dd>User ID</dd>
+<dt id="comm"><a class="header" href="control-center.html#comm">comm</a></dt>
+<dd>Process name</dd>
+<dt id="exe"><a class="header" href="control-center.html#exe">exe</a></dt>
+<dd>Executable path</dd>
+<dt id="sandboxed"><a class="header" href="control-center.html#sandboxed">Sandboxed</a></dt>
+<dd>Whether the client is sandboxed (only shown for sandboxed clients)</dd>
+<dt id="secure"><a class="header" href="control-center.html#secure">Secure</a></dt>
+<dd>Whether the client uses the privileged socket (only shown for secure clients)</dd>
+<dt id="xwayland"><a class="header" href="control-center.html#xwayland">Xwayland</a></dt>
+<dd>Shown only for X11 clients</dd>
+<dt id="sandbox-engine"><a class="header" href="control-center.html#sandbox-engine">Sandbox Engine</a></dt>
+<dd>Sandbox engine name (shown when sandboxed)</dd>
+<dt id="app-id"><a class="header" href="control-center.html#app-id">App ID</a></dt>
+<dd>Sandbox application ID (shown when sandboxed)</dd>
+<dt id="instance-id"><a class="header" href="control-center.html#instance-id">Instance ID</a></dt>
+<dd>Sandbox instance ID (shown when sandboxed)</dd>
+<dt id="tag"><a class="header" href="control-center.html#tag">Tag</a></dt>
+<dd>The connection tag, if any</dd>
+<dt id="kill"><a class="header" href="control-center.html#kill">Kill</a></dt>
+<dd>Button to forcefully disconnect the client</dd>
+<dt id="capabilities-1"><a class="header" href="control-center.html#capabilities-1">Capabilities</a></dt>
+<dd>Collapsible list of effective Wayland capabilities</dd>
+<dt id="windows"><a class="header" href="control-center.html#windows">Windows</a></dt>
+<dd>Collapsible list of all windows owned by this client</dd>
+</dl>
+<p>Click the <strong>open in new pane</strong> icon on any client to open a dedicated pane for
+that client, allowing you to keep it visible while browsing other panes.</p>
+<h3 id="window-search"><a class="header" href="control-center.html#window-search">Window Search</a></h3>
+<p>Search and filter windows across the compositor using the composable filter
+builder (see <a href="control-center.html#filtering">Filtering</a> below).</p>
+<p>Each matching window appears as a collapsible section showing its title. Expand
+it to see:</p>
+<dl>
+<dt id="id-1"><a class="header" href="control-center.html#id-1">ID</a></dt>
+<dd>Window identifier</dd>
+<dt id="title"><a class="header" href="control-center.html#title">Title</a></dt>
+<dd>Window title</dd>
+<dt id="workspace"><a class="header" href="control-center.html#workspace">Workspace</a></dt>
+<dd>Which workspace the window is on</dd>
+<dt id="type"><a class="header" href="control-center.html#type">Type</a></dt>
+<dd>Container, xdg_toplevel, X Window, or Placeholder</dd>
+<dt id="tag-1"><a class="header" href="control-center.html#tag-1">Tag</a></dt>
+<dd>Toplevel tag (set via window rules); only shown for xdg_toplevel windows</dd>
+<dt id="x11-properties"><a class="header" href="control-center.html#x11-properties">X11 properties</a></dt>
+<dd>Class, Instance, and Role (only shown for Xwayland windows)</dd>
+<dt id="app-id-1"><a class="header" href="control-center.html#app-id-1">App ID</a></dt>
+<dd>Application identifier</dd>
+<dt id="floating"><a class="header" href="control-center.html#floating">Floating</a></dt>
+<dd>Whether the window is floating</dd>
+<dt id="visible"><a class="header" href="control-center.html#visible">Visible</a></dt>
+<dd>Whether the window is visible</dd>
+<dt id="urgent"><a class="header" href="control-center.html#urgent">Urgent</a></dt>
+<dd>Whether the window has the urgency flag</dd>
+<dt id="fullscreen"><a class="header" href="control-center.html#fullscreen">Fullscreen</a></dt>
+<dd>Whether the window is fullscreen</dd>
+<dt id="content-type"><a class="header" href="control-center.html#content-type">Content Type</a></dt>
+<dd>The content type hint (photo, video, game), if set</dd>
+<dt id="client"><a class="header" href="control-center.html#client">Client</a></dt>
+<dd>Full client details (same as the Clients pane)</dd>
+</dl>
+<p>Click the <strong>open in new pane</strong> icon on any window to open a dedicated pane for
+that window.</p>
+<h3 id="xwayland-1"><a class="header" href="control-center.html#xwayland-1">Xwayland</a></h3>
+<p>Manage the Xwayland compatibility layer for running X11 applications:</p>
+<dl>
+<dt id="enabled-1"><a class="header" href="control-center.html#enabled-1">Enabled</a></dt>
+<dd>Toggle Xwayland on or off</dd>
+<dt id="scaling-mode"><a class="header" href="control-center.html#scaling-mode">Scaling Mode</a></dt>
+<dd>Dropdown: <code>default</code> or <code>downscaled</code> (renders at highest integer scale then downscales for sharper text on HiDPI)</dd>
+<dt id="display"><a class="header" href="control-center.html#display">DISPLAY</a></dt>
+<dd>Read-only X11 display number (only shown when Xwayland is running)</dd>
+<dt id="running"><a class="header" href="control-center.html#running">Running</a></dt>
+<dd>Whether Xwayland is currently running</dd>
+<dt id="pid-2"><a class="header" href="control-center.html#pid-2">PID</a></dt>
+<dd>Xwayland process ID (only shown when Xwayland is running)</dd>
+<dt id="kill-1"><a class="header" href="control-center.html#kill-1">Kill</a></dt>
+<dd>Button to forcefully terminate Xwayland (only shown when Xwayland is running)</dd>
+<dt id="client-1"><a class="header" href="control-center.html#client-1">Client</a></dt>
+<dd>Collapsible section with full client details for the Xwayland process (only shown when Xwayland is running)</dd>
+</dl>
+<h3 id="color-management"><a class="header" href="control-center.html#color-management">Color Management</a></h3>
+<p>Configure the Wayland color management protocol:</p>
+<dl>
+<dt id="enabled-2"><a class="header" href="control-center.html#enabled-2">Enabled</a></dt>
+<dd>Toggle the color management protocol for clients</dd>
+<dt id="available"><a class="header" href="control-center.html#available">Available</a></dt>
+<dd>Read-only indicator of whether color management is available with the current renderer and hardware</dd>
+</dl>
+<h2 id="filtering"><a class="header" href="control-center.html#filtering">Filtering</a></h2>
+<p>The <strong>Clients</strong> and <strong>Window Search</strong> panes share a composable filter system
+for narrowing down results. The filter builder works as follows:</p>
+<p>At the top level, select a combinator or a leaf criterion from the dropdown:</p>
+<ul>
+<li><strong>Not</strong> – inverts a single child criterion.</li>
+<li><strong>All</strong> – all child criteria must match (AND).</li>
+<li><strong>Any</strong> – at least one child criterion must match (OR).</li>
+<li><strong>Exactly(n)</strong> – exactly <em>n</em> child criteria must match (with a numeric input
+for <em>n</em>).</li>
+</ul>
+<p>Compound criteria contain a list of children. Click <strong>Add</strong> to append a new
+criterion; click the X button on any child to remove it. Criteria can be nested
+to arbitrary depth.</p>
+<p>Leaf criteria vary by context:</p>
+<p><strong>Client criteria:</strong> Comm, Exe, Tag, Sandbox Engine, Sandbox App ID, Sandbox
+Instance ID (all regex-matched text fields with a “Regex” checkbox), Sandboxed,
+Is Xwayland (boolean), UID, PID (numeric inputs).</p>
+<p><strong>Window criteria:</strong> Title, App ID, Tag, Workspace, X Class, X Instance, X Role
+(all regex-matched text fields), Floating, Visible, Urgent, Fullscreen
+(boolean), Content Types (checkboxes for Photo, Video, Game), and <strong>Client</strong>
+(a nested client criterion builder for filtering by the owning client’s
+properties).</p>
+<p>Text-matching criteria have a <strong>Regex</strong> checkbox. When unchecked, the input is
+matched as a literal string. When checked, it is treated as a regular
+expression. Invalid regex patterns show an error message.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="running.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="configuration/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="running.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="configuration/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

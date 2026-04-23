@@ -1,0 +1,639 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Shortcuts - The Jay Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-949e4302.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5c257383.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Jay Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/mahkoh/jay" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="shortcuts"><a class="header" href="shortcuts.html#shortcuts">Shortcuts</a></h1>
+<p>Shortcuts bind key combinations to actions. They are the primary way to
+interact with Jay.</p>
+<h2 id="basic-syntax"><a class="header" href="shortcuts.html#basic-syntax">Basic syntax</a></h2>
+<p>Shortcuts are defined in the <code>[shortcuts]</code> table. The left side is a key
+combination; the right side is an action:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-q = "quit"
+alt-Return = { type = "exec", exec = "alacritty" }
+alt-shift-c = "close"
+</code></pre>
+<h3 id="key-format"><a class="header" href="shortcuts.html#key-format">Key format</a></h3>
+<p>Key combinations follow the pattern <code>MODIFIER-MODIFIER-KEYSYM</code>:</p>
+<pre><code>(MOD-)*KEYSYM
+</code></pre>
+<p><strong>Keysym names</strong> are unmodified XKB keysym names from <a href="https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h">xkbcommon-keysyms.h</a>
+with the <code>XKB_KEY_</code> prefix removed. Use the unmodified keysym – write
+<code>shift-q</code>, not <code>shift-Q</code>.</p>
+<h3 id="modifiers"><a class="header" href="shortcuts.html#modifiers">Modifiers</a></h3>
+<p>The available modifiers are:</p>
+<dl>
+<dt id="shift"><a class="header" href="shortcuts.html#shift"><code>shift</code></a></dt>
+<dd>Shift key</dd>
+<dt id="ctrl"><a class="header" href="shortcuts.html#ctrl"><code>ctrl</code></a></dt>
+<dd>Control key</dd>
+<dt id="alt"><a class="header" href="shortcuts.html#alt"><code>alt</code></a></dt>
+<dd>Alt key</dd>
+<dt id="logo"><a class="header" href="shortcuts.html#logo"><code>logo</code></a></dt>
+<dd>Super/Meta/Windows key</dd>
+<dt id="lock"><a class="header" href="shortcuts.html#lock"><code>lock</code></a></dt>
+<dd>Lock modifier</dd>
+<dt id="caps"><a class="header" href="shortcuts.html#caps"><code>caps</code></a></dt>
+<dd>Caps Lock</dd>
+<dt id="num"><a class="header" href="shortcuts.html#num"><code>num</code></a></dt>
+<dd>Num Lock</dd>
+<dt id="mod1"><a class="header" href="shortcuts.html#mod1"><code>mod1</code></a></dt>
+<dd>Mod1 (typically Alt)</dd>
+<dt id="mod2"><a class="header" href="shortcuts.html#mod2"><code>mod2</code></a></dt>
+<dd>Mod2 (typically Num Lock)</dd>
+<dt id="mod3"><a class="header" href="shortcuts.html#mod3"><code>mod3</code></a></dt>
+<dd>Mod3</dd>
+<dt id="mod4"><a class="header" href="shortcuts.html#mod4"><code>mod4</code></a></dt>
+<dd>Mod4 (typically Super)</dd>
+<dt id="mod5"><a class="header" href="shortcuts.html#mod5"><code>mod5</code></a></dt>
+<dd>Mod5</dd>
+<dt id="release"><a class="header" href="shortcuts.html#release"><code>release</code></a></dt>
+<dd>Fire on key <strong>release</strong> instead of press</dd>
+</dl>
+<p>The <code>release</code> modifier is special: it causes the action to trigger when the key
+is released rather than when it is pressed.</p>
+<h2 id="simple-actions"><a class="header" href="shortcuts.html#simple-actions">Simple actions</a></h2>
+<p>Simple actions are written as plain strings. Here are the most commonly used
+ones:</p>
+<p><strong>Focus and movement:</strong></p>
+<pre><code class="language-toml">[shortcuts]
+alt-h = "focus-left"
+alt-j = "focus-down"
+alt-k = "focus-up"
+alt-l = "focus-right"
+
+alt-shift-h = "move-left"
+alt-shift-j = "move-down"
+alt-shift-k = "move-up"
+alt-shift-l = "move-right"
+</code></pre>
+<p><strong>Layout:</strong></p>
+<pre><code class="language-toml">[shortcuts]
+alt-d = "split-horizontal"
+alt-v = "split-vertical"
+alt-t = "toggle-split"
+alt-m = "toggle-mono"
+alt-f = "focus-parent"
+</code></pre>
+<p><strong>Window management:</strong></p>
+<pre><code class="language-toml">[shortcuts]
+alt-u = "toggle-fullscreen"
+alt-shift-f = "toggle-floating"
+alt-shift-c = "close"
+</code></pre>
+<p><strong>Compositor control:</strong></p>
+<pre><code class="language-toml">[shortcuts]
+alt-q = "quit"
+alt-shift-r = "reload-config-toml"
+</code></pre>
+<p><strong>Other useful simple actions:</strong></p>
+<ul>
+<li><code>consume</code> – consume the key event (prevent it from reaching applications).
+Key-press events that trigger shortcuts are consumed by default; key-release
+events are forwarded by default. Consuming key-release events can cause keys
+to get stuck in the focused application.</li>
+<li><code>forward</code> – forward the key event to the focused application (the inverse
+of <code>consume</code>)</li>
+<li><code>none</code> – unbind this key combination (useful for overriding defaults or
+inherited mode bindings)</li>
+<li><code>disable-pointer-constraint</code> – release a pointer lock/confinement</li>
+<li><code>focus-parent</code> – move focus to the parent container</li>
+<li><code>toggle-bar</code>, <code>show-bar</code>, <code>hide-bar</code> – control the status bar</li>
+<li><code>open-control-center</code> – open the Jay control center GUI</li>
+<li><code>warp-mouse-to-focus</code> – warp the cursor to the center of the focused window</li>
+<li><code>kill-client</code> – forcefully disconnect a client (in a window rule, kills the
+window’s client; in a client rule, kills the matched client; has no effect
+in plain shortcuts)</li>
+<li><code>focus-below</code>, <code>focus-above</code> – move focus to the layer below or above the
+current layer</li>
+<li><code>focus-tiles</code> – focus the tile layer</li>
+<li><code>create-mark</code>, <code>jump-to-mark</code> – interactively create or jump to a mark
+(the next pressed key identifies the mark). See <a href="shortcuts.html#marks">Marks</a> below.</li>
+<li><code>enable-window-management</code>, <code>disable-window-management</code> – programmatically
+enable or disable <a href="../floating.html#window-management-mode">window management mode</a></li>
+<li><code>reload-config-so</code> – reload the shared-library configuration (<code>config.so</code>)</li>
+</ul>
+<p>See the <a href="https://github.com/mahkoh/jay/blob/master/toml-spec/spec/spec.generated.md">specification</a> for the full list of simple
+actions.</p>
+<h2 id="parameterized-actions"><a class="header" href="shortcuts.html#parameterized-actions">Parameterized actions</a></h2>
+<p>Actions that need arguments are written as tables with a <code>type</code> field:</p>
+<h3 id="launching-programs"><a class="header" href="shortcuts.html#launching-programs">Launching programs</a></h3>
+<pre><code class="language-toml">[shortcuts]
+alt-Return = { type = "exec", exec = "alacritty" }
+alt-p = { type = "exec", exec = "bemenu-run" }
+</code></pre>
+<h3 id="switching-virtual-terminals"><a class="header" href="shortcuts.html#switching-virtual-terminals">Switching virtual terminals</a></h3>
+<pre><code class="language-toml">[shortcuts]
+ctrl-alt-F1 = { type = "switch-to-vt", num = 1 }
+ctrl-alt-F2 = { type = "switch-to-vt", num = 2 }
+</code></pre>
+<h3 id="workspaces"><a class="header" href="shortcuts.html#workspaces">Workspaces</a></h3>
+<pre><code class="language-toml">[shortcuts]
+alt-F1 = { type = "show-workspace", name = "1" }
+alt-F2 = { type = "show-workspace", name = "2" }
+
+alt-shift-F1 = { type = "move-to-workspace", name = "1" }
+alt-shift-F2 = { type = "move-to-workspace", name = "2" }
+</code></pre>
+<h3 id="moving-workspaces-to-outputs"><a class="header" href="shortcuts.html#moving-workspaces-to-outputs">Moving workspaces to outputs</a></h3>
+<pre><code class="language-toml">[shortcuts]
+logo-ctrl-shift-Right = {
+    type = "move-to-output",
+    direction = "right",
+}
+logo-ctrl-shift-Left = {
+    type = "move-to-output",
+    direction = "left",
+}
+</code></pre>
+<h3 id="resizing-windows"><a class="header" href="shortcuts.html#resizing-windows">Resizing windows</a></h3>
+<p>The <code>resize</code> action resizes the focused window by adjusting its edges.
+Each of the four optional fields (<code>dx1</code>, <code>dy1</code>, <code>dx2</code>, <code>dy2</code>) specifies a
+pixel offset for one edge of the window. Fields default to <code>0</code> when omitted.</p>
+<dl>
+<dt id="dx1"><a class="header" href="shortcuts.html#dx1"><code>dx1</code></a></dt>
+<dd>Change at the left edge (negative = grow left, positive = shrink left)</dd>
+<dt id="dy1"><a class="header" href="shortcuts.html#dy1"><code>dy1</code></a></dt>
+<dd>Change at the top edge (negative = grow up, positive = shrink down)</dd>
+<dt id="dx2"><a class="header" href="shortcuts.html#dx2"><code>dx2</code></a></dt>
+<dd>Change at the right edge (positive = grow right, negative = shrink right)</dd>
+<dt id="dy2"><a class="header" href="shortcuts.html#dy2"><code>dy2</code></a></dt>
+<dd>Change at the bottom edge (positive = grow down, negative = shrink down)</dd>
+</dl>
+<p>Growing the window by 10 pixels on the right:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-Right = { type = "resize", dx2 = 10 }
+</code></pre>
+<p>Shrinking the window by 10 pixels on the right:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-Left = { type = "resize", dx2 = -10 }
+</code></pre>
+<p>Moving the window 10 pixels to the right without changing its size (both
+left and right edges shift by the same amount):</p>
+<pre><code class="language-toml">[shortcuts]
+alt-shift-Right = { type = "resize", dx1 = 10, dx2 = 10 }
+</code></pre>
+<h3 id="other-parameterized-actions"><a class="header" href="shortcuts.html#other-parameterized-actions">Other parameterized actions</a></h3>
+<ul>
+<li><code>set-keymap</code> – change the active keymap</li>
+<li><code>set-repeat-rate</code> – change the keyboard repeat rate</li>
+<li><code>set-env</code> – set environment variables for future spawned programs</li>
+<li><code>unset-env</code> – remove environment variables</li>
+<li><code>configure-connector</code> – enable/disable a monitor</li>
+<li><code>configure-input</code> – change input device settings</li>
+<li><code>configure-output</code> – change output settings</li>
+<li><code>configure-idle</code> – change the idle timeout</li>
+<li><code>configure-direct-scanout</code> – enable or disable direct scanout</li>
+<li><code>configure-drm-device</code> – apply settings to a DRM device</li>
+<li><code>set-theme</code> – change theme settings</li>
+<li><code>set-log-level</code> – change the compositor log level</li>
+<li><code>set-gfx-api</code> – set the graphics API for new DRM devices (usually only
+effective at startup)</li>
+<li><code>set-render-device</code> – set the render device for compositing</li>
+<li><code>define-action</code> – define or redefine a named action at runtime</li>
+<li><code>undefine-action</code> – remove a named action</li>
+<li><code>create-mark</code> – create a mark with an explicit ID (see <a href="shortcuts.html#marks">Marks</a>)</li>
+<li><code>jump-to-mark</code> – jump to a mark with an explicit ID</li>
+<li><code>copy-mark</code> – copy a mark from one ID to another</li>
+<li><code>create-virtual-output</code> – create a virtual output</li>
+<li><code>remove-virtual-output</code> – remove a virtual output</li>
+</ul>
+<p>See the <a href="https://github.com/mahkoh/jay/blob/master/toml-spec/spec/spec.generated.md">specification</a> for the complete list.</p>
+<h2 id="running-multiple-actions"><a class="header" href="shortcuts.html#running-multiple-actions">Running multiple actions</a></h2>
+<p>Use an array to run several actions from a single shortcut:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-q = [
+    { type = "exec", exec = ["notify-send", "Goodbye!"] },
+    "quit",
+]
+</code></pre>
+<h2 id="the-exec-action-in-detail"><a class="header" href="shortcuts.html#the-exec-action-in-detail">The exec action in detail</a></h2>
+<p>The <code>exec</code> field accepts three forms:</p>
+<p><strong>A simple string</strong> – the program name with no arguments:</p>
+<pre><code class="language-toml">alt-Return = { type = "exec", exec = "alacritty" }
+</code></pre>
+<p><strong>An array of strings</strong> – the program name followed by arguments:</p>
+<pre><code class="language-toml">alt-n = { type = "exec", exec = ["notify-send", "Hello", "World"] }
+</code></pre>
+<p><strong>A table</strong> – full control over execution. Exactly one of <code>prog</code> or <code>shell</code>
+must be specified:</p>
+<pre><code class="language-toml"># Using prog + args
+alt-n = {
+    type = "exec",
+    exec = {
+        prog = "notify-send",
+        args = ["Hello"],
+        env = { LANG = "en_US.UTF-8" },
+    },
+}
+
+# Using shell (runs as: $SHELL -c "command")
+alt-s = {
+    type = "exec",
+    exec = {
+        shell = "grim - | wl-copy",
+        privileged = true,
+    },
+}
+</code></pre>
+<p>Table fields:</p>
+<dl>
+<dt id="prog"><a class="header" href="shortcuts.html#prog"><code>prog</code></a></dt>
+<dd>Program to execute (mutually exclusive with <code>shell</code>)</dd>
+<dt id="shell"><a class="header" href="shortcuts.html#shell"><code>shell</code></a></dt>
+<dd>Shell command to run via <code>$SHELL -c</code> (mutually exclusive with <code>prog</code>)</dd>
+<dt id="args"><a class="header" href="shortcuts.html#args"><code>args</code></a></dt>
+<dd>Arguments array (only with <code>prog</code>)</dd>
+<dt id="env"><a class="header" href="shortcuts.html#env"><code>env</code></a></dt>
+<dd>Per-process environment variables</dd>
+<dt id="privileged"><a class="header" href="shortcuts.html#privileged"><code>privileged</code></a></dt>
+<dd>If <code>true</code>, grants access to privileged Wayland protocols (default: <code>false</code>)</dd>
+<dt id="tag"><a class="header" href="shortcuts.html#tag"><code>tag</code></a></dt>
+<dd>Tag to apply to all Wayland connections spawned by this process</dd>
+</dl>
+<h3 id="practical-examples"><a class="header" href="shortcuts.html#practical-examples">Practical examples</a></h3>
+<p>Volume control with <code>pactl</code>:</p>
+<pre><code class="language-toml">[shortcuts]
+XF86AudioRaiseVolume = {
+    type = "exec",
+    exec = ["pactl", "set-sink-volume", "0", "+5%"],
+}
+XF86AudioLowerVolume = {
+    type = "exec",
+    exec = ["pactl", "set-sink-volume", "0", "-5%"],
+}
+XF86AudioMute = {
+    type = "exec",
+    exec = ["pactl", "set-sink-mute", "0", "toggle"],
+}
+</code></pre>
+<p>Taking a screenshot and copying to clipboard:</p>
+<pre><code class="language-toml">[shortcuts]
+Print = {
+    type = "exec",
+    exec = {
+        shell = "grim - | wl-copy",
+        privileged = true,
+    },
+}
+</code></pre>
+<h2 id="complex-shortcuts"><a class="header" href="shortcuts.html#complex-shortcuts">Complex shortcuts</a></h2>
+<p>Complex shortcuts provide additional control via the <code>[complex-shortcuts]</code>
+table. They support:</p>
+<ul>
+<li><strong><code>mod-mask</code></strong> – controls which modifiers are considered when matching.
+Set to <code>""</code> to ignore all modifiers.</li>
+<li><strong><code>action</code></strong> – the action to run on key press (defaults to <code>"none"</code>).</li>
+<li><strong><code>latch</code></strong> – an action to run when the key is <strong>released</strong>.</li>
+</ul>
+<h3 id="volume-keys-regardless-of-modifiers"><a class="header" href="shortcuts.html#volume-keys-regardless-of-modifiers">Volume keys regardless of modifiers</a></h3>
+<p>The volume keys should work whether or not Alt, Shift, etc. are held:</p>
+<pre><code class="language-toml">[complex-shortcuts.XF86AudioRaiseVolume]
+mod-mask = ""
+action = {
+    type = "exec",
+    exec = ["pactl", "set-sink-volume", "0", "+5%"],
+}
+
+[complex-shortcuts.XF86AudioLowerVolume]
+mod-mask = ""
+action = {
+    type = "exec",
+    exec = ["pactl", "set-sink-volume", "0", "-5%"],
+}
+</code></pre>
+<h3 id="push-to-talk"><a class="header" href="shortcuts.html#push-to-talk">Push-to-talk</a></h3>
+<p>Unmute audio while a key is held, mute on release:</p>
+<pre><code class="language-toml">[complex-shortcuts.alt-x]
+action = {
+    type = "exec",
+    exec = ["pactl", "set-sink-mute", "0", "0"],
+}
+latch = {
+    type = "exec",
+    exec = ["pactl", "set-sink-mute", "0", "1"],
+}
+</code></pre>
+<p>The <code>latch</code> action fires when the triggering key (<code>x</code> in this case) is
+released, regardless of any other keys pressed at that time.</p>
+<h2 id="marks"><a class="header" href="shortcuts.html#marks">Marks</a></h2>
+<p>Marks let you tag a window and quickly jump back to it later, similar to marks
+in Vim.</p>
+<h3 id="interactive-marks"><a class="header" href="shortcuts.html#interactive-marks">Interactive marks</a></h3>
+<p>The simplest way to use marks is interactively. Bind <code>create-mark</code> and
+<code>jump-to-mark</code> as simple string actions:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-m = "create-mark"
+alt-apostrophe = "jump-to-mark"
+</code></pre>
+<p>When you press <code>alt-m</code>, Jay waits for the next key press (e.g. <code>a</code>) and
+assigns the mark to the currently focused window. When you press
+<code>alt-apostrophe</code> followed by <code>a</code>, Jay focuses the marked window.</p>
+<h3 id="hard-coded-marks"><a class="header" href="shortcuts.html#hard-coded-marks">Hard-coded marks</a></h3>
+<p>You can skip the interactive step by specifying a mark ID directly:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-shift-1 = { type = "create-mark", id.key = "1" }
+alt-1       = { type = "jump-to-mark", id.key = "1" }
+</code></pre>
+<p>Mark IDs can be identified by a key name (<code>id.key</code>) or by an arbitrary string
+(<code>id.name</code>):</p>
+<pre><code class="language-toml">[shortcuts]
+alt-shift-b = { type = "create-mark", id.name = "browser" }
+alt-b       = { type = "jump-to-mark", id.name = "browser" }
+</code></pre>
+<p>Key names use Linux input event code names with the <code>KEY_</code> prefix removed, all
+lowercase (see the <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h">Linux input event codes</a>).</p>
+<h3 id="copying-marks"><a class="header" href="shortcuts.html#copying-marks">Copying marks</a></h3>
+<p>The <code>copy-mark</code> action copies a mark from one ID to another:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-c = { type = "copy-mark", src.key = "a", dst.name = "backup" }
+</code></pre>
+<h2 id="named-actions"><a class="header" href="shortcuts.html#named-actions">Named actions</a></h2>
+<p>Named actions provide another layer of reuse. Define them in the <code>[actions]</code>
+table and reference them with <code>$name</code>:</p>
+<pre><code class="language-toml">[actions]
+my-layout = [
+    "split-horizontal",
+    { type = "exec", exec = "alacritty" },
+]
+
+[shortcuts]
+alt-l = "$my-layout"
+</code></pre>
+<p>You can redefine named actions at runtime using the <code>define-action</code> and
+<code>undefine-action</code> parameterized actions:</p>
+<pre><code class="language-toml">[shortcuts]
+alt-shift-q = {
+    type = "define-action",
+    name = "my-layout",
+    action = "quit",
+}
+</code></pre>
+<h2 id="virtual-outputs"><a class="header" href="shortcuts.html#virtual-outputs">Virtual outputs</a></h2>
+<p>Virtual outputs can be created and removed via actions. A virtual output has
+the connector name <code>VO-{name}</code> and the serial number <code>{name}</code>. A newly created
+virtual output is initially disabled.</p>
+<pre><code class="language-toml">[shortcuts]
+alt-shift-v = {
+    type = "create-virtual-output",
+    name = "screen-share",
+}
+alt-shift-x = {
+    type = "remove-virtual-output",
+    name = "screen-share",
+}
+</code></pre>
+<p>You can pre-configure the virtual output using connector and output match
+rules:</p>
+<pre><code class="language-toml">[[outputs]]
+match.connector = "VO-screen-share"
+enabled = true
+mode = {
+    width = 1920,
+    height = 1080,
+    refresh-rate = 120.0,
+}
+</code></pre>
+<h2 id="actions-in-window-rules"><a class="header" href="shortcuts.html#actions-in-window-rules">Actions in window rules</a></h2>
+<p>When certain simple actions are used inside a <a href="../window-rules.html">window rule</a>,
+they apply to the <strong>matched window</strong> instead of the focused window. The
+affected actions are: <code>move-left</code>, <code>move-down</code>, <code>move-up</code>, <code>move-right</code>,
+<code>split-horizontal</code>, <code>split-vertical</code>, <code>toggle-split</code>, <code>tile-horizontal</code>,
+<code>tile-vertical</code>, <code>show-single</code>, <code>show-all</code>, <code>toggle-fullscreen</code>,
+<code>enter-fullscreen</code>, <code>exit-fullscreen</code>, <code>close</code>, <code>toggle-floating</code>, <code>float</code>,
+<code>tile</code>, <code>toggle-float-pinned</code>, <code>pin-float</code>, <code>unpin-float</code>, and <code>resize</code>.</p>
+<p>Similarly, <code>kill-client</code> applies to the matched window’s client in a window
+rule, or to the matched client in a client rule.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="keymaps.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="startup.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="keymaps.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="startup.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+[package]
+name = "xml-to-wire"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+quick-xml = "0.39.2"
+thiserror = "2.0.18"

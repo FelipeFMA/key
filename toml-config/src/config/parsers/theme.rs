@@ -1,0 +1,151 @@
+use {
+    crate::{
+        config::{
+            Theme,
+            context::Context,
+            extractor::{Extractor, ExtractorError, opt, recover, s32, str, val},
+            parser::{DataType, ParseResult, Parser, UnexpectedDataType},
+            parsers::color::ColorParser,
+        },
+        toml::{
+            toml_span::{DespanExt, Span, Spanned},
+            toml_value::Value,
+        },
+    },
+    indexmap::IndexMap,
+    jay_config::theme::BarPosition,
+    thiserror::Error,
+};
+
+pub struct ThemeParser<'a>(pub &'a Context<'a>);
+
+#[derive(Debug, Error)]
+pub enum ThemeParserError {
+    #[error(transparent)]
+    Expected(#[from] UnexpectedDataType),
+    #[error(transparent)]
+    Extractor(#[from] ExtractorError),
+}
+
+impl Parser for ThemeParser<'_> {
+    type Value = Theme;
+    type Error = ThemeParserError;
+    const EXPECTED: &'static [DataType] = &[DataType::Table];
+
+    fn parse_table(
+        &mut self,
+        span: Span,
+        table: &IndexMap<Spanned<String>, Spanned<Value>>,
+    ) -> ParseResult<Self> {
+        let mut ext = Extractor::new(self.0, span, table);
+        let (
+            (
+                attention_requested_bg_color,
+                bg_color,
+                bar_bg_color,
+                bar_status_text_color,
+                border_color,
+                captured_focused_title_bg_color,
+                captured_unfocused_title_bg_color,
+                focused_inactive_title_bg_color,
+                focused_inactive_title_text_color,
+                focused_title_bg_color,
+            ),
+            (
+                focused_title_text_color,
+                separator_color,
+                unfocused_title_bg_color,
+                unfocused_title_text_color,
+                highlight_color,
+                border_width,
+                title_height,
+                bar_height,
+                font,
+                title_font,
+            ),
+            (bar_font, bar_position_val, bar_separator_width),
+        ) = ext.extract((
+            (
+                opt(val("attention-requested-bg-color")),
+                opt(val("bg-color")),
+                opt(val("bar-bg-color")),
+                opt(val("bar-status-text-color")),
+                opt(val("border-color")),
+                opt(val("captured-focused-title-bg-color")),
+                opt(val("captured-unfocused-title-bg-color")),
+                opt(val("focused-inactive-title-bg-color")),
+                opt(val("focused-inactive-title-text-color")),
+                opt(val("focused-title-bg-color")),
+            ),
+            (
+                opt(val("focused-title-text-color")),
+                opt(val("separator-color")),
+                opt(val("unfocused-title-bg-color")),
+                opt(val("unfocused-title-text-color")),
+                opt(val("highlight-color")),
+                recover(opt(s32("border-width"))),
+                recover(opt(s32("title-height"))),
+                recover(opt(s32("bar-height"))),
+                recover(opt(str("font"))),
+                recover(opt(str("title-font"))),
+            ),
+            (
+                recover(opt(str("bar-font"))),
+                recover(opt(str("bar-position"))),
+                recover(opt(s32("bar-separator-width"))),
+            ),
+        ))?;
+        macro_rules! color {
+            ($e:expr) => {
+                match $e {
+                    None => None,
+                    Some(v) => match v.parse(&mut ColorParser) {
+                        Ok(v) => Some(v),
+                        Err(e) => {
+                            log::warn!("Could not parse a color: {}", self.0.error(e));
+                            None
+                        }
+                    },
+                }
+            };
+        }
+        let bar_position =
+            bar_position_val.and_then(|value| match value.value.to_lowercase().as_str() {
+                "top" => Some(BarPosition::Top),
+                "bottom" => Some(BarPosition::Bottom),
+                _ => {
+                    log::warn!(
+                        "Unknown bar position '{}': {}",
+                        value.value,
+                        self.0.error3(value.span)
+                    );
+                    None
+                }
+            });
+        Ok(Theme {
+            attention_requested_bg_color: color!(attention_requested_bg_color),
+            bg_color: color!(bg_color),
+            bar_bg_color: color!(bar_bg_color),
+            bar_status_text_color: color!(bar_status_text_color),
+            border_color: color!(border_color),
+            captured_focused_title_bg_color: color!(captured_focused_title_bg_color),
+            captured_unfocused_title_bg_color: color!(captured_unfocused_title_bg_color),
+            focused_inactive_title_bg_color: color!(focused_inactive_title_bg_color),
+            focused_inactive_title_text_color: color!(focused_inactive_title_text_color),
+            focused_title_bg_color: color!(focused_title_bg_color),
+            focused_title_text_color: color!(focused_title_text_color),
+            separator_color: color!(separator_color),
+            unfocused_title_bg_color: color!(unfocused_title_bg_color),
+            unfocused_title_text_color: color!(unfocused_title_text_color),
+            highlight_color: color!(highlight_color),
+            border_width: border_width.despan(),
+            title_height: title_height.despan(),
+            bar_height: bar_height.despan(),
+            font: font.map(|f| f.value.to_string()),
+            title_font: title_font.map(|f| f.value.to_string()),
+            bar_font: bar_font.map(|f| f.value.to_string()),
+            bar_position,
+            bar_separator_width: bar_separator_width.despan(),
+        })
+    }
+}

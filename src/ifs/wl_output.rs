@@ -1,0 +1,620 @@
+mod removed_output;
+
+use {
+    crate::{
+        backend::{self, BackendColorSpace, BackendEotfs, BackendLuminance},
+        client::{Client, ClientError, ClientId},
+        cmm::{
+            cmm_description::ColorDescription,
+            cmm_eotf::Eotf,
+            cmm_luminance::Luminance,
+            cmm_primaries::{NamedPrimaries, Primaries},
+        },
+        damage::DamageMatrix,
+        format::{Format, XRGB8888},
+        globals::{Global, GlobalName},
+        ifs::{
+            color_management::wp_color_management_output_v1::WpColorManagementOutputV1,
+            wl_surface::WlSurface, zxdg_output_v1::ZxdgOutputV1,
+        },
+        leaks::Tracker,
+        object::{Object, Version},
+        rect::Rect,
+        state::{ConnectorData, State},
+        tree::{OutputNode, TearingMode, Transform, VrrMode, calculate_logical_size},
+        utils::{
+            cell_ext::CellExt, clonecell::CloneCell, copyhashmap::CopyHashMap, ordered_float::F64,
+            rc_eq::rc_eq,
+        },
+        wire::{WlOutputId, WpColorManagementOutputV1Id, ZxdgOutputV1Id, wl_output::*},
+    },
+    ahash::AHashMap,
+    linearize::Linearize,
+    std::{
+        cell::{Cell, RefCell},
+        collections::hash_map::Entry,
+        hash::{Hash, Hasher},
+        rc::Rc,
+    },
+    thiserror::Error,
+};
+
+const SP_UNKNOWN: i32 = 0;
+#[expect(dead_code)]
+const SP_NONE: i32 = 1;
+#[expect(dead_code)]
+const SP_HORIZONTAL_RGB: i32 = 2;
+#[expect(dead_code)]
+const SP_HORIZONTAL_BGR: i32 = 3;
+#[expect(dead_code)]
+const SP_VERTICAL_RGB: i32 = 4;
+#[expect(dead_code)]
+const SP_VERTICAL_BGR: i32 = 5;
+
+pub const TF_NORMAL: i32 = 0;
+pub const TF_90: i32 = 1;
+pub const TF_180: i32 = 2;
+pub const TF_270: i32 = 3;
+pub const TF_FLIPPED: i32 = 4;
+pub const TF_FLIPPED_90: i32 = 5;
+pub const TF_FLIPPED_180: i32 = 6;
+pub const TF_FLIPPED_270: i32 = 7;
+
+const MODE_CURRENT: u32 = 1;
+#[expect(dead_code)]
+const MODE_PREFERRED: u32 = 2;
+
+pub struct WlOutputGlobal {
+    pub name: GlobalName,
+    pub state: Rc<State>,
+    pub connector: Rc<ConnectorData>,
+    pub pos: Cell<Rect>,
+    pub output_id: Rc<OutputId>,
+    pub mode: Cell<backend::Mode>,
+    pub refresh_nsec: Cell<u64>,
+    pub modes: Option<Vec<backend::Mode>>,
+    pub formats: CloneCell<Rc<Vec<&'static Format>>>,
+    pub format: Cell<&'static Format>,
+    pub width_mm: i32,
+    pub height_mm: i32,
+    pub eotfs: Vec<BackendEotfs>,
+    pub color_spaces: Vec<BackendColorSpace>,
+    pub primaries: Primaries,
+    pub luminance: Option<BackendLuminance>,
+    pub bindings: RefCell<AHashMap<ClientId, AHashMap<WlOutputId, Rc<WlOutput>>>>,
+    pub destroyed: Cell<bool>,
+    pub legacy_scale: Cell<u32>,
+    pub persistent: Rc<PersistentOutputState>,
+    pub opt: Rc<OutputGlobalOpt>,
+    pub damage_matrix: Cell<DamageMatrix>,
+    pub btf: Cell<BackendEotfs>,
+    pub bcs: Cell<BackendColorSpace>,
+    pub color_description: CloneCell<Rc<ColorDescription>>,
+    pub linear_color_description: CloneCell<Rc<ColorDescription>>,
+    pub color_description_listeners:
+        CopyHashMap<(ClientId, WpColorManagementOutputV1Id), Rc<WpColorManagementOutputV1>>,
+}
+
+impl PartialEq for WlOutputGlobal {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
+#[derive(Default)]
+pub struct OutputGlobalOpt {
+    pub global: CloneCell<Option<Rc<WlOutputGlobal>>>,
+    pub node: CloneCell<Option<Rc<OutputNode>>>,
+}
+
+impl OutputGlobalOpt {
+    pub fn get(&self) -> Option<Rc<WlOutputGlobal>> {
+        self.global.get()
+    }
+
+    pub fn node(&self) -> Option<Rc<OutputNode>> {
+        self.node.get()
+    }
+
+    pub fn clear(&self) {
+        self.node.take();
+        self.global.take();
+    }
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Linearize)]
+pub enum BlendSpace {
+    Linear,
+    Srgb,
+}
+
+impl BlendSpace {
+    pub fn name(self) -> &'static str {
+        match self {
+            BlendSpace::Linear => "linear",
+            BlendSpace::Srgb => "srgb",
+        }
+    }
+}
+
+pub struct PersistentOutputState {
+    pub transform: Cell<Transform>,
+    pub scale: Cell<crate::scale::Scale>,
+    pub pos: Cell<(i32, i32)>,
+    pub vrr_mode: Cell<VrrMode>,
+    pub vrr_cursor_hz: Cell<Option<f64>>,
+    pub tearing_mode: Cell<TearingMode>,
+    pub brightness: Cell<Option<f64>>,
+    pub blend_space: Cell<BlendSpace>,
+    pub use_native_gamut: Cell<bool>,
+}
+
+impl Default for PersistentOutputState {
+    fn default() -> Self {
+        Self {
+            transform: Default::default(),
+            scale: Default::default(),
+            pos: Default::default(),
+            vrr_mode: Cell::new(VrrMode::Never),
+            vrr_cursor_hz: Default::default(),
+            tearing_mode: Cell::new(TearingMode::Never),
+            brightness: Default::default(),
+            blend_space: Cell::new(BlendSpace::Srgb),
+            use_native_gamut: Cell::new(false),
+        }
+    }
+}
+
+#[derive(Eq, Debug)]
+pub struct OutputId {
+    pub _connector: Option<String>,
+    pub manufacturer: String,
+    pub model: String,
+    pub serial_number: String,
+    pub hash: OutputIdHash,
+}
+
+hash_type!(OutputIdHash);
+
+impl PartialEq for OutputId {
+    fn eq(&self, other: &Self) -> bool {
+        self.hash == other.hash
+    }
+}
+
+impl Hash for OutputId {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.hash.hash(state);
+    }
+}
+
+impl OutputId {
+    pub fn new(
+        connector: impl Into<String>,
+        manufacturer: impl Into<String>,
+        model: impl Into<String>,
+        serial_number: impl Into<String>,
+    ) -> Rc<Self> {
+        let connector = connector.into();
+        let manufacturer = manufacturer.into();
+        let model = model.into();
+        let serial_number = serial_number.into();
+        Self::new_(connector, manufacturer, model, serial_number)
+    }
+
+    fn new_(
+        connector: String,
+        manufacturer: String,
+        model: String,
+        serial_number: String,
+    ) -> Rc<Self> {
+        let connector = serial_number.is_empty().then_some(connector);
+        let mut hasher = blake3::Hasher::new();
+        hasher.update(&[connector.is_some() as u8]);
+        let mut hash = |s: &str| {
+            hasher.update(&(s.len() as u64).to_le_bytes());
+            hasher.update(s.as_bytes());
+        };
+        connector.as_deref().map(&mut hash);
+        hash(&manufacturer);
+        hash(&model);
+        hash(&serial_number);
+        Rc::new(Self {
+            _connector: connector,
+            manufacturer,
+            model,
+            serial_number,
+            hash: OutputIdHash(*hasher.finalize().as_bytes()),
+        })
+    }
+}
+
+impl WlOutputGlobal {
+    pub fn clear(&self) {
+        self.opt.clear();
+        self.bindings.borrow_mut().clear();
+        self.color_description_listeners.clear();
+    }
+
+    pub fn new(
+        name: GlobalName,
+        state: &Rc<State>,
+        connector: &Rc<ConnectorData>,
+        modes: Option<Vec<backend::Mode>>,
+        width_mm: i32,
+        height_mm: i32,
+        output_id: &Rc<OutputId>,
+        persistent_state: &Rc<PersistentOutputState>,
+        eotfs: Vec<BackendEotfs>,
+        color_spaces: Vec<BackendColorSpace>,
+        primaries: Primaries,
+        luminance: Option<BackendLuminance>,
+    ) -> Self {
+        let (x, y) = persistent_state.pos.get();
+        let scale = persistent_state.scale.get();
+        let connector_state = connector.state.borrow();
+        let (width, height) = calculate_logical_size(
+            (connector_state.mode.width, connector_state.mode.height),
+            persistent_state.transform.get(),
+            scale,
+        );
+        let global = Self {
+            name,
+            state: state.clone(),
+            connector: connector.clone(),
+            pos: Cell::new(Rect::new_sized_saturating(x, y, width, height)),
+            output_id: output_id.clone(),
+            mode: Cell::new(connector_state.mode),
+            refresh_nsec: Cell::new(connector_state.mode.refresh_nsec()),
+            modes,
+            formats: CloneCell::new(Rc::new(vec![])),
+            format: Cell::new(XRGB8888),
+            width_mm,
+            height_mm,
+            eotfs,
+            color_spaces,
+            primaries,
+            luminance,
+            bindings: Default::default(),
+            destroyed: Cell::new(false),
+            legacy_scale: Cell::new(scale.round_up()),
+            persistent: persistent_state.clone(),
+            opt: Default::default(),
+            damage_matrix: Default::default(),
+            btf: Cell::new(connector_state.eotf),
+            bcs: Cell::new(connector_state.color_space),
+            color_description: CloneCell::new(state.color_manager.srgb_gamma22().clone()),
+            linear_color_description: CloneCell::new(state.color_manager.srgb_linear().clone()),
+            color_description_listeners: Default::default(),
+        };
+        global.update_damage_matrix();
+        global.update_color_description();
+        global
+    }
+
+    pub fn position(&self) -> Rect {
+        self.pos.get()
+    }
+
+    pub fn for_each_binding<F: FnMut(&Rc<WlOutput>)>(&self, client: ClientId, mut f: F) {
+        let bindings = self.bindings.borrow_mut();
+        if let Some(bindings) = bindings.get(&client) {
+            for binding in bindings.values() {
+                f(binding);
+            }
+        }
+    }
+
+    pub fn send_enter(&self, surface: &WlSurface) {
+        self.for_each_binding(surface.client.id, |b| {
+            surface.send_enter(b.id);
+        })
+    }
+
+    pub fn send_leave(&self, surface: &WlSurface) {
+        self.for_each_binding(surface.client.id, |b| {
+            surface.send_leave(b.id);
+        })
+    }
+
+    pub fn send_mode(&self) {
+        let bindings = self.bindings.borrow_mut();
+        for binding in bindings.values() {
+            for binding in binding.values() {
+                binding.send_updates();
+            }
+        }
+    }
+
+    fn bind_(
+        self: Rc<Self>,
+        id: WlOutputId,
+        client: &Rc<Client>,
+        version: Version,
+    ) -> Result<(), WlOutputError> {
+        let obj = Rc::new(WlOutput {
+            global: self.opt.clone(),
+            id,
+            xdg_outputs: Default::default(),
+            client: client.clone(),
+            version,
+            tracker: Default::default(),
+        });
+        track!(client, obj);
+        client.add_client_obj(&obj)?;
+        self.bindings
+            .borrow_mut()
+            .entry(client.id)
+            .or_default()
+            .insert(id, obj.clone());
+        obj.send_geometry();
+        obj.send_mode();
+        if obj.version >= SEND_SCALE_SINCE {
+            obj.send_scale();
+        }
+        if obj.version >= SEND_NAME_SINCE {
+            obj.send_name();
+        }
+        if obj.version >= SEND_DONE_SINCE {
+            obj.send_done();
+        }
+        for group in client.objects.ext_workspace_groups.lock().values() {
+            if rc_eq(&group.output, &self.opt) {
+                group.handle_new_output(&obj);
+            }
+        }
+        Ok(())
+    }
+
+    pub fn pixel_size(&self) -> (i32, i32) {
+        let mode = self.mode.get();
+        self.persistent
+            .transform
+            .get()
+            .maybe_swap((mode.width, mode.height))
+    }
+
+    pub fn update_damage_matrix(&self) {
+        let pos = self.pos.get();
+        let mode = self.mode.get();
+        let matrix = DamageMatrix::new(
+            self.persistent.transform.get().inverse(),
+            1,
+            pos.width(),
+            pos.height(),
+            None,
+            mode.width,
+            mode.height,
+        );
+        self.damage_matrix.set(matrix);
+        self.connector
+            .damage_intersect
+            .set(Rect::new_sized_saturating(0, 0, mode.width, mode.height));
+    }
+
+    pub fn add_damage_area(&self, area: &Rect) {
+        let pos = self.pos.get();
+        let rect = area.move_(-pos.x1(), -pos.y1());
+        let mut rect = self.damage_matrix.get().apply(0, 0, rect);
+        let damage = &mut *self.connector.damage.borrow_mut();
+        const MAX_CONNECTOR_DAMAGE: usize = 32;
+        if damage.len() >= MAX_CONNECTOR_DAMAGE {
+            rect = rect.union(damage.pop().unwrap());
+        }
+        damage.push(rect.intersect(self.connector.damage_intersect.get()));
+    }
+
+    pub fn add_visualizer_damage(&self) {
+        self.state.damage_visualizer.copy_damage(self);
+    }
+
+    pub fn update_color_description(&self) -> bool {
+        let (mut luminance, tf) = match self.btf.get() {
+            BackendEotfs::Default => (Luminance::SRGB, Eotf::Gamma22),
+            BackendEotfs::Pq => (Luminance::ST2084_PQ, Eotf::St2084Pq),
+        };
+        if let Some(brightness) = self.persistent.brightness.get() {
+            luminance.white.0 = brightness;
+        }
+        let mut target_luminance = luminance.to_target();
+        let mut max_cll = None;
+        let mut max_fall = None;
+        if let Some(l) = self.luminance
+            && self.btf.get() == BackendEotfs::Pq
+        {
+            target_luminance.min = F64(l.min);
+            target_luminance.max = F64(l.max);
+            max_cll = Some(F64(l.max));
+            max_fall = Some(F64(l.max_fall));
+        }
+        let named_primaries;
+        let primaries;
+        let target_primaries;
+        match self.bcs.get() {
+            BackendColorSpace::Default => {
+                if self.persistent.use_native_gamut.get()
+                    && self.primaries != NamedPrimaries::Srgb.primaries()
+                {
+                    named_primaries = None;
+                    primaries = self.primaries;
+                } else {
+                    named_primaries = Some(NamedPrimaries::Srgb);
+                    primaries = NamedPrimaries::Srgb.primaries();
+                }
+                target_primaries = primaries;
+            }
+            BackendColorSpace::Bt2020 => {
+                named_primaries = Some(NamedPrimaries::Bt2020);
+                primaries = NamedPrimaries::Bt2020.primaries();
+                target_primaries = self.primaries;
+            }
+        }
+        let cd = self.state.color_manager.get_description(
+            named_primaries,
+            primaries,
+            luminance,
+            tf,
+            target_primaries,
+            target_luminance,
+            max_cll,
+            max_fall,
+        );
+        let cd_linear = self.state.color_manager.get_with_tf(&cd, Eotf::Linear);
+        self.linear_color_description.set(cd_linear.clone());
+        self.color_description.set(cd.clone()).id != cd.id
+    }
+}
+
+global_base!(WlOutputGlobal, WlOutput, WlOutputError);
+
+const OUTPUT_VERSION: u32 = 4;
+
+impl Global for WlOutputGlobal {
+    fn version(&self) -> u32 {
+        OUTPUT_VERSION
+    }
+}
+
+dedicated_add_global!(WlOutputGlobal, outputs);
+
+pub struct WlOutput {
+    pub global: Rc<OutputGlobalOpt>,
+    pub id: WlOutputId,
+    pub xdg_outputs: CopyHashMap<ZxdgOutputV1Id, Rc<ZxdgOutputV1>>,
+    client: Rc<Client>,
+    pub version: Version,
+    tracker: Tracker<Self>,
+}
+
+pub const SEND_DONE_SINCE: Version = Version(2);
+pub const SEND_SCALE_SINCE: Version = Version(2);
+pub const SEND_NAME_SINCE: Version = Version(4);
+
+impl WlOutput {
+    pub fn send_updates(&self) {
+        self.send_geometry();
+        self.send_mode();
+        if self.version >= SEND_SCALE_SINCE {
+            self.send_scale();
+        }
+        if self.version >= SEND_DONE_SINCE {
+            self.send_done();
+        }
+        let xdg = self.xdg_outputs.lock();
+        for xdg in xdg.values() {
+            xdg.send_updates();
+        }
+    }
+
+    fn send_geometry(&self) {
+        let Some(global) = self.global.get() else {
+            return;
+        };
+        let pos = global.pos.get();
+        let mut x = pos.x1();
+        let mut y = pos.y1();
+        logical_to_client_wire_scale!(self.client, x, y);
+        let event = Geometry {
+            self_id: self.id,
+            x,
+            y,
+            physical_width: global.width_mm,
+            physical_height: global.height_mm,
+            subpixel: SP_UNKNOWN,
+            make: &global.output_id.manufacturer,
+            model: &global.output_id.model,
+            transform: global.persistent.transform.get().to_wl(),
+        };
+        self.client.event(event);
+    }
+
+    fn send_mode(&self) {
+        let Some(global) = self.global.get() else {
+            return;
+        };
+        let mut mode = global.mode.get();
+        logical_to_client_wire_scale!(self.client, mode.width, mode.height);
+        let event = Mode {
+            self_id: self.id,
+            flags: MODE_CURRENT,
+            width: mode.width,
+            height: mode.height,
+            refresh: mode.refresh_rate_millihz as _,
+        };
+        self.client.event(event);
+    }
+
+    fn send_scale(&self) {
+        let Some(global) = self.global.get() else {
+            return;
+        };
+        let factor = match self.client.wire_scale.is_some() {
+            true => 1,
+            false => global.legacy_scale.get() as _,
+        };
+        let event = Scale {
+            self_id: self.id,
+            factor,
+        };
+        self.client.event(event);
+    }
+
+    fn send_name(&self) {
+        let Some(global) = self.global.get() else {
+            return;
+        };
+        self.client.event(Name {
+            self_id: self.id,
+            name: &global.connector.name,
+        });
+    }
+
+    pub fn send_done(&self) {
+        let event = Done { self_id: self.id };
+        self.client.event(event);
+    }
+
+    fn remove_binding(&self) {
+        let Some(global) = self.global.get() else {
+            return;
+        };
+        if let Entry::Occupied(mut e) = global.bindings.borrow_mut().entry(self.client.id) {
+            e.get_mut().remove(&self.id);
+            if e.get().is_empty() {
+                e.remove();
+            }
+        };
+    }
+}
+
+impl WlOutputRequestHandler for WlOutput {
+    type Error = WlOutputError;
+
+    fn release(&self, _req: Release, _slf: &Rc<Self>) -> Result<(), Self::Error> {
+        self.xdg_outputs.clear();
+        self.remove_binding();
+        self.client.remove_obj(self)?;
+        Ok(())
+    }
+}
+
+object_base! {
+    self = WlOutput;
+    version = self.version;
+}
+
+impl Object for WlOutput {
+    fn break_loops(&self) {
+        self.xdg_outputs.clear();
+        self.remove_binding();
+    }
+}
+
+dedicated_add_obj!(WlOutput, WlOutputId, outputs);
+
+#[derive(Debug, Error)]
+pub enum WlOutputError {
+    #[error(transparent)]
+    ClientError(Box<ClientError>),
+}
+efrom!(WlOutputError, ClientError);
