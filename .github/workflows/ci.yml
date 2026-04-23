@@ -1,0 +1,206 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  BUILD_DEPS: >-
+    libinput-dev
+    libgbm-dev
+    libudev-dev
+    libpango1.0-dev
+    libfontconfig-dev
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  fmt:
+    name: Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          toolchain: nightly
+          components: rustfmt
+          cache: "false"
+
+      - name: Check formatting
+        run: cargo +nightly fmt --all -- --check
+
+  generated:
+    name: Generated Files
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          cache-shared-key: generated
+
+      - name: Check shader hashes
+        run: cargo run --locked --manifest-path compile-shaders/Cargo.toml -p compile-shaders-core
+
+      - name: Check TOML spec artifacts
+        run: cargo run --locked -p toml-spec
+
+      - name: Verify generated files are committed
+        run: git diff --exit-code
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          apt-packages: ${{ env.BUILD_DEPS }}
+          cache-shared-key: build
+
+      - name: Build workspace
+        run: cargo build --workspace --locked --profile ci
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          apt-packages: ${{ env.BUILD_DEPS }}
+          cache-shared-key: unit-tests
+
+      - name: Run workspace tests
+        run: cargo test --workspace --locked --profile ci
+
+  toml-fixture-tests:
+    name: TOML Fixture Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          submodules: recursive
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          cache-shared-key: toml-fixtures
+
+      - name: Run TOML corpus test
+        run: cargo test --locked --profile ci -p jay-toml-config corpus_matches_reference_json -- --ignored
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          apt-packages: >-
+            ${{ env.BUILD_DEPS }}
+            libvulkan1
+            mesa-vulkan-drivers
+            xwayland
+            adwaita-icon-theme
+          cache-shared-key: integration-tests
+
+      - name: Prepare runner
+        run: |
+          ls -lah /dev/dri
+          sudo chmod o+rw /dev/dri/card*
+          sudo chmod o+r /dev/udmabuf
+
+      - name: Build integration test binary
+        run: cargo build --locked --profile ci --features it
+
+      - name: Run integration tests
+        env:
+          RUST_BACKTRACE: "1"
+        run: ./target/ci/jay run-tests
+
+  musl-check:
+    name: musl Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          apt-packages: musl-tools
+          target: x86_64-unknown-linux-musl
+          cache-shared-key: musl
+
+      - name: Check musl target
+        env:
+          CC_x86_64_unknown_linux_musl: musl-gcc
+          CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER: musl-gcc
+        run: cargo check --locked --profile ci --target x86_64-unknown-linux-musl
+
+  release-check:
+    name: Release Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          apt-packages: ${{ env.BUILD_DEPS }}
+          cache-shared-key: release
+
+      - name: Check release profile
+        run: cargo check --workspace --locked --release
+
+  nix:
+    name: Nix Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Build flake package
+        run: nix build .#jay --print-build-logs

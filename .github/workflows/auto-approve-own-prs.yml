@@ -2,7 +2,7 @@ name: auto-approve
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main, master ]
 
 jobs:
   auto-approve:
@@ -11,7 +11,9 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
     - name: Auto-approve PR
       run: gh pr review ${{ github.event.pull_request.number }} --approve
       env:

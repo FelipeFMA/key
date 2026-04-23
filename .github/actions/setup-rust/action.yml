@@ -1,0 +1,54 @@
+name: Setup Rust
+description: Install Ubuntu packages and configure a Rust toolchain with caching.
+
+inputs:
+  apt-packages:
+    description: Space-separated Ubuntu packages to install with apt.
+    required: false
+    default: ""
+  toolchain:
+    description: Rust toolchain to install.
+    required: false
+    default: stable
+  target:
+    description: Additional Rust target to install.
+    required: false
+    default: ""
+  components:
+    description: Additional Rust components to install.
+    required: false
+    default: ""
+  cache:
+    description: Whether to enable the Rust cache.
+    required: false
+    default: "true"
+  cache-shared-key:
+    description: Shared cache key for Rust artifacts.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Install system dependencies
+      if: ${{ inputs.apt-packages != '' }}
+      shell: bash
+      env:
+        APT_PACKAGES: ${{ inputs.apt-packages }}
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends $APT_PACKAGES
+
+    - name: Install Rust toolchain
+      uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: ${{ inputs.toolchain }}
+        target: ${{ inputs.target }}
+        components: ${{ inputs.components }}
+        cache: ${{ inputs.cache }}
+        cache-shared-key: ${{ inputs.cache-shared-key }}
+        cache-workspaces: |
+          . -> target
+          compile-shaders -> target
+        rustflags: ""
